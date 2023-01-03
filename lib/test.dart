@@ -270,7 +270,7 @@ class _TestState extends State<Test> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Container(),
-            Padding(
+            const Padding(
                 padding: EdgeInsets.fromLTRB(0, 0, 15, 0),
                 child: Text('Perform workouts')),
             Image.asset('assets/img/shoulder_press_icon.png',
