@@ -64,6 +64,9 @@ flutter:
   assets:
   - assets/model.tflite
   - assets/model2.tflite
+  - assets/lite-model_movenet.tflite
+  - assets/lite-model_movenet_singlepose_lightning_tflite_int8_4.tflite
+  - assets/lite-model_movenet_singlepose_lightning_3.tflite
 
   - assets/img/hamburger_icon.png
   - assets/img/shoulder_press_icon.png

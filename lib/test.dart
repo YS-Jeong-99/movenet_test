@@ -138,6 +138,7 @@ class _TestState extends State<Test> {
   }
 
   void nextWorkout() {
+    //운동 하나 다하고 다음 운동으로 넘어가기
     setState(() {
       workoutIndex += 1;
     });
@@ -145,6 +146,7 @@ class _TestState extends State<Test> {
   }
 
   void loadCamera() {
+    //카메라 불러오기
     setState(() {
       cameraController = CameraController(cameras![1], ResolutionPreset.medium);
     });
@@ -215,8 +217,11 @@ class _TestState extends State<Test> {
       // });
 
       if (!rest) {
+        //휴식 상태가 아닐 때
         if (handler.doneSets < sets) {
+          //현재까지의 세트 값이 해야할 총 세트보다 낮을 때
           if (handler.doneReps < reps) {
+            //현재까지의 횟수 값이 해야할 총 횟수보다 낮을 때
             handler.checkLimbs(inferenceResults, limbsIndex);
             isProperForm = handler.isPostureCorrect();
             handler.doReps(inferenceResults);
@@ -226,6 +231,7 @@ class _TestState extends State<Test> {
               test_angle1 = handler.angle;
             });
           } else {
+            //현재까지의 횟수 값이 총 횟수와 같을 때
             handler.doneReps = 0;
             handler.doneSets++;
             setState(() {
@@ -236,6 +242,7 @@ class _TestState extends State<Test> {
             });
           }
         } else {
+          //현재까지의 세트 값이 총 세트 값과 같을 때
           handler.doneSets = 0;
           handler.doneReps = 0;
           setState(() {
@@ -247,6 +254,7 @@ class _TestState extends State<Test> {
           });
         }
       } else {
+        //휴식 상태일 때
         setState(() {
           restTime = 0;
           rest = false;
@@ -270,7 +278,7 @@ class _TestState extends State<Test> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Container(),
-            const Padding(
+            Padding(
                 padding: EdgeInsets.fromLTRB(0, 0, 15, 0),
                 child: Text('Perform workouts')),
             Image.asset('assets/img/shoulder_press_icon.png',
@@ -389,8 +397,18 @@ class RenderLandmarks extends CustomPainter {
     ..color = Colors.orange
     ..strokeWidth = 5;
 
+  var point_black = Paint()
+    ..color = Colors.black
+    ..strokeCap = StrokeCap.round
+    ..strokeWidth = 8;
+
+  var edge_black = Paint()
+    ..color = Colors.black54
+    ..strokeWidth = 5;
+
   List<Offset> points_green = [];
   List<Offset> points_red = [];
+  List<Offset> points_black = [];
 
   List<dynamic> edges = [
     [0, 1], // nose to left_eye
@@ -432,6 +450,7 @@ class RenderLandmarks extends CustomPainter {
     }
     canvas.drawPoints(PointMode.points, points_green, point_green);
     canvas.drawPoints(PointMode.points, points_red, point_red);
+    // canvas.drawPoints(PointMode.points, points_black, point_black);
   }
 
   @override
@@ -456,6 +475,13 @@ class RenderLandmarks extends CustomPainter {
         double vertex2Y = inferenceList[edge[1]][1].toDouble() - 30;
         canvas.drawLine(Offset(vertex1X, vertex1Y), Offset(vertex2X, vertex2Y),
             isCorrect ? edge_green : edge_red);
+      } else {
+        double vertex1X = inferenceList[edge[0]][0].toDouble() - 70;
+        double vertex1Y = inferenceList[edge[0]][1].toDouble() - 30;
+        double vertex2X = inferenceList[edge[1]][0].toDouble() - 70;
+        double vertex2Y = inferenceList[edge[1]][1].toDouble() - 30;
+        canvas.drawLine(
+            Offset(vertex1X, vertex1Y), Offset(vertex2X, vertex2Y), edge_black);
       }
     }
   }
